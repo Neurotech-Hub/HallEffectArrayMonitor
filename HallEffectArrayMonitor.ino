@@ -1,18 +1,4 @@
-//
-//    FILE: ADS_read.ino
-//  AUTHOR: Rob.Tillaart
-// PURPOSE: read analog inputs - straightforward.
-//     URL: https://github.com/RobTillaart/ADS1X15
-
-//  test
-//  connect 1 potmeter per port.
-//
-//  GND ---[   x   ]------ 5V
-//             |
-//
-//  measure at x (connect to AIN0).
-
-
+// by Matt Gaidica, PhD
 
 #include "ADS1X15.h"
 
@@ -22,16 +8,27 @@ ADS1115 ADS(0x48);
 void setup() 
 {
   Serial.begin(115200);
-  Serial.println(__FILE__);
-  Serial.print("ADS1X15_LIB_VERSION: ");
-  Serial.println(ADS1X15_LIB_VERSION);
-
   ADS.begin();
+  Serial.println("\n\nHello, Hall.");
 }
-
 
 void loop() 
 {
+  // Read input from the Serial Monitor
+  if (Serial.available()) {
+    char incomingChar = Serial.read();
+    
+    if (incomingChar == '\n') {
+      // Process the data after receiving a newline character
+      processReceivedData();
+    }
+    if (incomingChar == 'r') {
+      Serial.println("--RESET\n\n");
+    }
+  }
+}
+
+void processReceivedData() {
   ADS.setGain(1);
 
   int16_t val_0 = ADS.readADC(0);  
@@ -43,10 +40,4 @@ void loop()
   Serial.print(val_0 * f, 3); Serial.print('\t');
   Serial.print(val_1 * f, 3); Serial.print('\t');
   Serial.print(val_2 * f, 3); Serial.println();
-
-  delay(100);
 }
-
-
-// -- END OF FILE --
-
