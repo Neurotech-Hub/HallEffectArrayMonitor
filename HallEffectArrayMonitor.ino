@@ -26,11 +26,13 @@ void setup() {
 void loop() {
   for (i = 0; i < 8; i++) {
     if (i < 4) {
-      Serial.print(ADS.readADC(i) * f);
+      Serial.print(ADS.readADC(i) * f,4);
     } else {
-      Serial.print(ADS2.readADC(i - 4) * f);
+      Serial.print(ADS2.readADC(i - 4) * f,4);
     }
-    Serial.print("\t");
+    if (i < 7) {
+      Serial.print("\t");
+    }
   }
   Serial.println("");
   // delay(500);
